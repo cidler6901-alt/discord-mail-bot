@@ -1,3 +1,10 @@
+import { startEmailWatchers } from "./emailWatcher.js";
+
+startEmailWatchers();
+
+
+
+
 import express from "express";
 import { Client, GatewayIntentBits } from "discord.js";
 import { startEmailWatchers } from "./emailWatcher.js";
