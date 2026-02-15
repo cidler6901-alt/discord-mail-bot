@@ -40,6 +40,8 @@ client.once("ready", async () => {
     console.error("❌ Failed to start email watchers:", err);
   }
 });
+console.log("BOT_TOKEN exists:", !!process.env.BOT_TOKEN);
+console.log("config.discord.token exists:", !!config.discord.token);
 
 client.login(config.discord.token).catch((err) => {
   console.error("❌ Discord login failed. Check BOT_TOKEN:", err);
