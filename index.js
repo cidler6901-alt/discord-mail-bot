@@ -26,9 +26,20 @@ client.once("ready", async () => {
 });
 
 // Debug token loading
+if (!process.env.discord_token) {
+  console.error("❌ BOT_TOKEN is missing from environment variables!");
+  process.exit(1);
+}
+
 if (!config.discord.token) {
   console.error("❌ BOT_TOKEN is missing from environment variables!");
   process.exit(1);
 }
 
-client.login(config.discord.token);
+
+if (!config.discord.token) {
+  console.error("❌ BOT_TOKEN is missing from environment variables!");
+  process.exit(1);
+}
+
+client.login(process.env.discord_token);
