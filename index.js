@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { startEmailWatchers } from "./emailWatcher.js";
-import config from "./config.json" assert { type: "json" };
+import config from "./config.json" insert { type: "json" };
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
