@@ -1,0 +1,14 @@
+{
+  "name": "email-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord bot that sends messages when emails are received",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "imapflow": "^1.0.181"
+  }
+}
