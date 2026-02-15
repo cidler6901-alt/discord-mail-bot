@@ -43,7 +43,10 @@ client.once("ready", async () => {
 console.log("BOT_TOKEN exists:", !!process.env.BOT_TOKEN);
 console.log("config.discord.token exists:", !!config.discord.token);
 
-client.login(config.discord.token).catch((err) => {
-  console.error("❌ Discord login failed. Check BOT_TOKEN:", err);
+try {
+  await client.login(config.discord.token);
+  console.log(`✅ Logged in successfully as ${client.user.tag}`);
+} catch (err) {
+  console.error("❌ Discord login failed. Check your BOT_TOKEN:", err);
   process.exit(1);
-});
+}
