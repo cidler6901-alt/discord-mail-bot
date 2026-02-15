@@ -3,43 +3,45 @@ import { Client, GatewayIntentBits } from "discord.js";
 import { startEmailWatchers } from "./emailWatcher.js";
 import config from "./config.js";
 
+// --------------------
+// Web server (required by Render)
+// --------------------
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// --- Web server for Render ---
 app.get("/", (req, res) => {
-  res.send("Discord Mail Bot is running ✅");
+  res.send("📧 Discord Mail Bot is running ✅");
 });
 
 app.listen(PORT, () => {
   console.log(`🌐 Web server running on port ${PORT}`);
 });
 
-// --- Discord bot ---
+// --------------------
+// Discord bot setup
+// --------------------
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [GatewayIntentBits.Guilds],
 });
 
+// Make sure token exists
+if (!config.discord.token) {
+  console.error("❌ BOT_TOKEN is missing! Set it in Render Environment variables.");
+  process.exit(1);
+}
+
+// Login and start watchers
 client.once("ready", async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
-  await startEmailWatchers(client, config);
+  try {
+    await startEmailWatchers(client, config);
+    console.log("📡 Email watchers started for Gmail & Zoho.");
+  } catch (err) {
+    console.error("❌ Failed to start email watchers:", err);
+  }
 });
 
-// Debug token loading
-if (!process.env.discord_token) {
-  console.error("❌ BOT_TOKEN is missing from environment variables!");
+client.login(config.discord.token).catch((err) => {
+  console.error("❌ Discord login failed. Check BOT_TOKEN:", err);
   process.exit(1);
-}
-
-if (!config.discord.token) {
-  console.error("❌ BOT_TOKEN is missing from environment variables!");
-  process.exit(1);
-}
-
-
-if (!config.discord.token) {
-  console.error("❌ BOT_TOKEN is missing from environment variables!");
-  process.exit(1);
-}
-
-client.login(process.env.discord_token);
+});
