@@ -1,31 +1,24 @@
-const imapConfig = {
-  gmail: {
-    host: "imap.gmail.com",
-    port: 993,
-    secure: true
+// emailWatcher.js
+const { EmailWatcher } = require("some-email-watcher-lib"); // replace with your actual lib
+
+// Only include the services you actually use
+const watcher = new EmailWatcher({
+  services: ["gmail"],   // remove "zoho" from here
+  credentials: {
+    gmail: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    },
+    // no Zoho credentials at all
   },
-  outlook: {
-    host: "imap-mail.outlook.com",
-    port: 993,
-    secure: true
-  }
-};
+  pollingInterval: 30000, // 30s polling
+});
 
-for (const account of config.emails) {
-  const imap = new ImapFlow({
-    host: imapConfig[account.service].host,
-    port: imapConfig[account.service].port,
-    secure: imapConfig[account.service].secure,
-    auth: {
-      user: account.user,
-      pass: account.pass
-    }
-  });
+watcher.on("newEmail", (email) => {
+  console.log("📧 New Gmail message:", email.subject);
+});
 
-  try {
-    await imap.connect();
-    console.log(`📡 Connected to ${account.service} (${account.user})`);
-  } catch (err) {
-    console.error(`❌ Failed to connect to ${account.service}:`, err.message);
-  }
-}
+// Start only the explicitly configured watchers
+watcher.start()
+  .then(() => console.log("📡 Email watchers started for Gmail only."))
+  .catch(console.error);
